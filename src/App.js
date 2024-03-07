@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { QrReader } from 'react-qr-reader';
 import numWords from 'num-words'; // Import numWords library
+import QRCode from 'qrcode.react'; // Import QRCode component
 
 function App() {
   const [selectedItem, setSelectedItem] = useState('');
@@ -45,13 +46,13 @@ function App() {
       return;
     }
 
+    setQrData(JSON.stringify({ selectedItem, location: selectedItem.allowed_locations[0] }));
     setQrScanning(true);
   };
 
   const handleQrScan = (data) => {
     if (data) {
       setQrScanning(false);
-      setDestinationLocation(data);
     }
   };
 
@@ -88,7 +89,6 @@ function App() {
       });
       if (response.ok) {
         setQrData(JSON.stringify({ selectedItem, location: destinationLocation })); // Set QR data with the updated location
-        setQrScanning(true); // Enable QR scanning
       } else {
         setError("Failed to submit the location. Please try again.");
       }
@@ -136,7 +136,7 @@ function App() {
         <button onClick={handleSubmit} className="block w-full bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600">Submit and scan the final location</button>
         {qrData && (
           <div className="mt-4">
-            <img src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrData)}`} alt="QR Code" />
+            <QRCode value={qrData} />
           </div>
         )}
         <button onClick={handleScanLocation} className="block w-full bg-blue-500 text-white rounded mt-4 px-4 py-2 hover:bg-blue-600">Scan Initial Location</button>
