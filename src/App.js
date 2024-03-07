@@ -45,9 +45,9 @@ function App() {
       setError("Please select an item first.");
       return;
     }
-
-    setQrData(JSON.stringify({ selectedItem, location: selectedItem.allowed_locations[0] }));
-    setQrScanning(true);
+    
+    const initialLocation = selectedItem.allowed_locations[0]; // Get the initial location
+    setQrData(JSON.stringify({ selectedItem, location: initialLocation })); // Set QR data with the initial location
   };
 
   const handleQrScan = (data) => {
